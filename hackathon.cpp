@@ -12,25 +12,25 @@ long long convertToDecimal(const string& numberInBase,int base){
     for(char digit:numberInBase){
         int digitValue;
         if(isdigit(digit))
-            digitValue=digit-'0';
+            digitValue=digit - '0';
         else
-            digitValue=tolower(digit)-'a'+10;
-        decimalValue=decimalValue*base+digitValue;
+            digitValue = tolower(digit)-'a'+10;
+        decimalValue = decimalValue*base+digitValue;
     }
     return decimalValue;
 }
 
-double findConstantTerm(const vector<double>& xList,const vector<double>& yList){
+double findConstantTerm(const vector<double>& xList, const vector<double>& yList){
     double constantTerm=0.0;
     int totalPoints=xList.size();
     for(int i=0;i<totalPoints;i++){
         double currentTerm=yList[i];
         for(int j=0;j<totalPoints;j++){
             if(j!=i){
-                currentTerm*=(0.0-xList[j])/(xList[i]-xList[j]);
+                currentTerm*= (0.0-xList[j]) / (xList[i]-xList[j]);
             }
         }
-        constantTerm+=currentTerm;
+        constantTerm+= currentTerm;
     }
     return constantTerm;
 }
@@ -38,22 +38,25 @@ double findConstantTerm(const vector<double>& xList,const vector<double>& yList)
 int main(){
     ifstream inputFile("testcase2.json");
     if(!inputFile.is_open()){
-        cerr<<"Could not open the input JSON file!"<<endl;
+        cerr<<"Canoot open json file!"<<endl;
         return 1;
     }
 
     json inputData;
-    inputFile>>inputData;
+    inputFile >> inputData;
     inputFile.close();
 
-    int totalRoots=inputData["keys"]["n"];
-    int minimumRoots=inputData["keys"]["k"];
+    int totalRoots = inputData["keys"]["n"];
+    int minimumRoots = inputData["keys"]["k"];
 
     vector<double> xValues;
     vector<double> yValues;
 
-    for(auto element=inputData.begin();element!=inputData.end();++element){
-        if(element.key()=="keys")continue;
+    for(auto element=inputData.begin(); element!=inputData.end(); ++element){
+        if(element.key()=="keys") {
+            continue;
+        }
+        
         int xValue=stoi(element.key());
         int baseOfY=stoi(element.value()["base"].get<string>());
         string yEncoded=element.value()["value"];
@@ -68,6 +71,6 @@ int main(){
     }
 
     double constantC=findConstantTerm(xValues,yValues);
-    cout<<"The value of c is : " << (long long)round(constantC)<<endl;
+    cout << "The value of c is : " << (long long)round(constantC) << endl;
     return 0;
 }
